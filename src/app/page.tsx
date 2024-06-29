@@ -8,13 +8,11 @@ import { SheetSide } from "@/components/ui/SheetSlide";
 import Image from "next/image";
 
 export default function Home() {
-  const handleClick = () => {
-    console.log("Button clicked!");
-  };
+
   const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
 
   type SheetSide = (typeof SHEET_SIDES)[number];
   return <>
-  
+    <h1 className="text-[32px] text-yellow-500 text-center mt-[200px]">Navigate between the tabs to explore different entity data.</h1>
   </>;
 }
