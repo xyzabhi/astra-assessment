@@ -17,7 +17,7 @@ interface DataTableProps {
   isLoading: boolean;
 }
 
-const CustumTable: React.FC<DataTableProps> = ({ data, isLoading}) => {
+const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
   // console.log(keysEntityMap[tableType]);
   const tableHeaders = data[0] ? Object.keys(data[0]) : [];
   const renderTableHeader = () => {
@@ -34,7 +34,13 @@ const CustumTable: React.FC<DataTableProps> = ({ data, isLoading}) => {
 
   const renderTableBody = () =>
     data.map((row) => (
-      <TableRow key={12}>
+      <TableRow
+        key={12}
+        onClick={() => {
+          alert("Abhinav");
+        }}
+        className="hover:cursor-pointer"
+      >
         {tableHeaders.map((key) => (
           <TableCell key={key}>{row[key]}</TableCell>
         ))}
