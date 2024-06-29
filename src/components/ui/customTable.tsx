@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { starShipsDataType } from "@/lib/types";
 import { Button } from "./button";
 import { Input } from "./input";
