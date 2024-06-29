@@ -47,30 +47,17 @@ const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
       </TableRow>
     ));
 
-  return (
-    <div className="m-5 p-5 border border-gray-300 rounded-md">
-      {isLoading ? (
-        <div className="flex flex-row min-h-[500px] justify-center items-center">
-          <div className="w-12 h-12 rounded-full animate-spin border-8 border-solid border-yellow-500 border-t-transparent"></div>
-        </div>
-      ) : (
-        <>
-          <Input
-            type="text"
-            className="mb-2"
-            placeholder="Search ...."
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
-          />
-
-          <Table className="border border-gray-300 rounded-md p-5">
-            {renderTableHeader()}
-            <TableBody>{renderTableBody()}</TableBody>
-          </Table>
-        </>
-      )}
+  return isLoading ? (
+    <div className="flex flex-row min-h-[500px] justify-center items-center">
+      <div className="w-12 h-12 rounded-full animate-spin border-8 border-solid border-yellow-500 border-t-transparent"></div>
     </div>
+  ) : (
+    <>
+      <Table className="border border-gray-300 rounded-md p-5">
+        {renderTableHeader()}
+        <TableBody>{renderTableBody()}</TableBody>
+      </Table>
+    </>
   );
 };
 

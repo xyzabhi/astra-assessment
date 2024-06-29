@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import CustumTable from "@/components/ui/customTable";
+import { Input } from "@/components/ui/input";
 import { keysEntityMap } from "@/lib/constants";
 import { characterDataType } from "@/lib/types";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -95,6 +96,14 @@ function EntityPage({}) {
 
   return (
     <div>
+      <Input
+        type="text"
+        className="mb-2"
+        placeholder="Search ...."
+        onChange={(e) => {
+          console.log(e.target.value);
+        }}
+      />
       <CustumTable data={data} isLoading={loading} />
       <div className="flex items-center justify-between mt-5">
         <Button
