@@ -1,9 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import CustumTable from "@/components/ui/customTable";
 import { keysEntityMap } from "@/lib/constants";
 import { characterDataType } from "@/lib/types";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function EntityPage({}) {
@@ -11,17 +12,28 @@ function EntityPage({}) {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
+  const [currPageNumber, setCurrPageNumber] = useState(1);
+  const [totalPages, setTotalPages] = useState();
 
+  const [currPage, setCurrPage] = useState(
+    `https://www.swapi.tech/api${pathname}?page=1&limit=10`
+  );
+
+  const [nextPage, setNextPage] = useState();
+  const [prevPage, setPrevPage] = useState();
   const getUrlsOfEntityItems = (data: any) => {
     return data.map((item: { url: any }) => item.url);
   };
 
-  const filterDataAsPerAsType = (data: any[], keys: { label: string; key: string }[]) => {
+  const filterDataAsPerAsType = (
+    data: any[],
+    keys: { label: string; key: string }[]
+  ) => {
     const filteredData = data.map((item: any) => {
       const tableRow: any = {};
       keys.forEach((key: { label: string; key: string }) => {
         console.log(item.result.properties[key.key]); // Logging the label for clarity
-        
+
         // Correctly access item[key.key] to get the value based on the provided key
         tableRow[key.label] = item.result.properties[key.key];
       });
@@ -29,17 +41,18 @@ function EntityPage({}) {
     });
     return filteredData;
   };
-  
 
   useEffect(() => {
     const fetchDataAndFetchAllData = async () => {
       try {
         // Fetch initial data
         setLoading(true);
-        const res = await fetch(`https://www.swapi.tech/api${pathname}`);
+        const res = await fetch(currPage);
         const result = await res.json();
         const urls = getUrlsOfEntityItems(result.results); // Assuming getUrlsOfEntityItems is defined elsewhere
-
+        setNextPage(result.next);
+        setPrevPage(result.previous);
+        setTotalPages(result.total_pages);
         // Fetch additional data from extracted urls
         const fetchAllData = async (urls: any[]) => {
           try {
@@ -56,7 +69,6 @@ function EntityPage({}) {
 
             const data = await Promise.all(fetchPromises);
             // console.log("All data fetched:", data);
-           
 
             const filteredData = filterDataAsPerAsType(
               data,
@@ -69,7 +81,7 @@ function EntityPage({}) {
           } finally {
             setLoading(false);
           }
-        };  
+        };
 
         // Call fetchAllData with the extracted urls
         await fetchAllData(urls);
@@ -79,16 +91,32 @@ function EntityPage({}) {
     };
 
     fetchDataAndFetchAllData(); // Call the combined function to initiate data fetching
-  }, [pathname]);
-  console.log(data, "deta is ");
+  }, [pathname, currPage]);
 
-  if (loading) return <div>Loading..</div>;
   return (
     <div>
-      <CustumTable
-        data={data}
-        tableType={pathname.substring(1).toLocaleLowerCase()}
-      />
+      <CustumTable data={data} isLoading={loading} />
+      <div className="flex items-center justify-between mt-5">
+        <Button
+          disabled={!prevPage}
+          onClick={() => {
+            setCurrPage(prevPage ?? "");
+            setCurrPageNumber(currPageNumber - 1);
+          }}
+        >
+          Prev
+        </Button>
+        {totalPages && <p>{`${currPageNumber}/${totalPages}`}</p>}
+        <Button
+          disabled={!nextPage}
+          onClick={() => {
+            setCurrPage(nextPage ?? "");
+            setCurrPageNumber(currPageNumber + 1);
+          }}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

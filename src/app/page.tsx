@@ -11,9 +11,6 @@ export default function Home() {
     console.log("Button clicked!");
   };
   return (
-    <main className="flex min-h-screen flex-col  justify-between ">
-      <Header />
-      <SheetSide />
-    </main>
+    <></>
   );
 }

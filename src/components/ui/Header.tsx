@@ -1,16 +1,19 @@
 // components/Header.js
+"use client"
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { routes } from "@/lib/constants";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+    const pathname: string = usePathname();
   const renderLink = () =>
     routes.map((link) => (
       <Link
         key={link.href}
         href={link.href}
-        className="hover:text-black transition duration-300 hover:bg-yellow-500 p-1 rounded"
+        className={`hover:text-black transition duration-300 hover:bg-yellow-500 p-1 rounded  ${pathname.toLocaleLowerCase()===link.href?'bg-yellow-500 text-black':""}`}
       >
         {link.label}
       </Link>
