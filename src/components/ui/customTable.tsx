@@ -11,11 +11,24 @@ import {
   TableRow,
 } from "./table";
 import { keysEntityMap } from "@/lib/constants";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
 
 interface DataTableProps {
   data: Record<string, any>[]; // Dynamic data array
   isLoading: boolean;
 }
+const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
+
+type SheetSide = (typeof SHEET_SIDES)[number];
 
 const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
   // console.log(keysEntityMap[tableType]);
@@ -34,17 +47,27 @@ const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
 
   const renderTableBody = () =>
     data.map((row) => (
-      <TableRow
-        key={12}
-        onClick={() => {
-          alert("Abhinav");
-        }}
-        className="hover:cursor-pointer"
-      >
-        {tableHeaders.map((key) => (
-          <TableCell key={key}>{row[key]}</TableCell>
-        ))}
-      </TableRow>
+      <Sheet key={"side"}>
+        <SheetTrigger asChild>
+          <TableRow key={12} className="hover:cursor-pointer">
+            {tableHeaders.map((key) => (
+              <TableCell key={key}>{row[key]}</TableCell>
+            ))}
+          </TableRow>
+        </SheetTrigger>
+        <SheetContent side={"bottom"}>
+          <SheetHeader>
+            <SheetTitle>{row.Name}</SheetTitle>
+            <SheetDescription>
+              Make changes to your profile here. Click save whenre done.
+              <Button>Hello</Button>
+            </SheetDescription>
+          </SheetHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4"></div>
+          </div>
+        </SheetContent>
+      </Sheet>
     ));
 
   return isLoading ? (
