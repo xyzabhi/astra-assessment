@@ -24,21 +24,24 @@ import {
 
 interface DataTableProps {
   data: Record<string, any>[]; // Dynamic data array
-  isLoading: boolean;
+  isAsc: number;
+  handleSortOrder: any;
 }
 const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
 
-type SheetSide = (typeof SHEET_SIDES)[number];
-
-const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
-  // console.log(keysEntityMap[tableType]);
+const CustumTable: React.FC<DataTableProps> = ({ data, isAsc,handleSortOrder }) => {
   const tableHeaders = data[0] ? Object.keys(data[0]) : [];
   const renderTableHeader = () => {
     return (
       <TableHeader>
         <TableRow>
           {tableHeaders.map((header: any) => (
-            <TableHead key={header}>{header}</TableHead>
+            <TableHead key={header}>
+              {header}{" "}
+              <span className="text-black cursor-pointer" onClick={handleSortOrder}>
+                {header === "Name" ? (isAsc ? "▲" : "▼") : ""}
+              </span>
+            </TableHead>
           ))}
         </TableRow>
       </TableHeader>
@@ -70,17 +73,11 @@ const CustumTable: React.FC<DataTableProps> = ({ data, isLoading }) => {
       </Sheet>
     ));
 
-  return isLoading ? (
-    <div className="flex flex-row min-h-[500px] justify-center items-center">
-      <div className="w-12 h-12 rounded-full animate-spin border-8 border-solid border-yellow-500 border-t-transparent"></div>
-    </div>
-  ) : (
-    <>
-      <Table className="border border-gray-300 rounded-md p-5">
-        {renderTableHeader()}
-        <TableBody>{renderTableBody()}</TableBody>
-      </Table>
-    </>
+  return (
+    <Table className="border border-gray-300 rounded-md p-5">
+      {renderTableHeader()}
+      <TableBody>{renderTableBody()}</TableBody>
+    </Table>
   );
 };
 
