@@ -146,7 +146,7 @@ function EntityPage({}) {
       <div className="w-12 h-12 rounded-full animate-spin border-8 border-solid border-yellow-500 border-t-transparent"></div>
     </div>
   ) : (
-    <div>
+    <div className="w-2/3 m-auto">
       <Input
         type="text"
         className="mb-2 text-yellow-500"
@@ -168,6 +168,7 @@ function EntityPage({}) {
             setCurrPage(prevPage ?? "");
             setCurrPageNumber(currPageNumber - 1);
           }}
+          className="text-yellow-500"
         >
           Prev
         </Button>
@@ -178,6 +179,7 @@ function EntityPage({}) {
             setCurrPage(nextPage ?? "");
             setCurrPageNumber(currPageNumber + 1);
           }}
+          className="text-yellow-500"
         >
           Next
         </Button>

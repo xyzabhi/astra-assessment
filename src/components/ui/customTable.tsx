@@ -46,7 +46,7 @@ const CustumTable: React.FC<DataTableProps> = ({
             <TableHead key={header} className="text-yellow-500">
               {header}{" "}
               <span
-                className="text-black cursor-pointer"
+                className="text-yellow-500 cursor-pointer"
                 onClick={handleSortOrder}
               >
                 {header === "Name" ? (isAsc ? "▲" : "▼") : ""}
