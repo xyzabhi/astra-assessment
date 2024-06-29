@@ -28,13 +28,16 @@ function EntityPage({}) {
   const getUrlsOfEntityItems = (data: any) => {
     return data.map((item: { url: any }) => item.url);
   };
-
+  //Fectch All Films
   useEffect(() => {
     const fetchFilms = async () => {
       try {
         const res = await fetch(STAR_WARS_API_BASE_URL + "films");
         const filmResults = await res.json();
-        setFilms(filmResults);
+        const filmList = filmResults.result.map(
+          (item: any) => item.properties.title
+        );
+        setFilms(filmList);
       } catch {
         console.error("Error fetching data:", error);
       }
@@ -146,7 +149,7 @@ function EntityPage({}) {
     <div>
       <Input
         type="text"
-        className="mb-2"
+        className="mb-2 text-yellow-500"
         placeholder="Search ...."
         onChange={(e) => {
           handleSearch(e.target.value);
@@ -156,6 +159,7 @@ function EntityPage({}) {
         data={filteredData}
         isAsc={sortOrder}
         handleSortOrder={handleSortOrder}
+        filmList={films}
       />
       <div className="flex items-center justify-between mt-5">
         <Button
